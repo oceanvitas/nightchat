@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>夜聊-独聊</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="layout">
+    <header class="fixedHeader">
+        <a href="member.html" class="returnIcon fl"></a>
+        <a href="index.html" class="homeIcon fr"></a>
+        <h1>九州.羽然</h1>
+    </header>
+    <section class="chats">
+        <div class="loadMore">更多消息</div>
+        <div class="chatList">
+            <div class="chatCon" data-mid="1385716179170">
+                <span class="chatPhoto" data-nid="p2n3s0x100"></span>
+                <div class="chatMiddle">
+                    <div class="chatMessage">
+                        他们说的都是扯淡！羽然足矣~
+                        <img src="images/test/img2.gif" />
+                    </div>
+                </div>
+            </div>
+            <div class="chatCon myChat" data-mid="1385716179170">
+                <span class="chatPhoto" data-nid="p2n3s0x100"></span>
+                <div class="chatMiddle">
+                    <div class="chatMessage">
+                        当你的双翼扬起，你身边的一切 都将现予水与火，骨肉离散，至 爱分离，霸业倾颓，万事皆化云 烟。你还要飞翔吗？
+                    </div>
+                </div>
+            </div>
+            <div class="chatCon" data-mid="1385716179170">
+                <span class="chatPhoto" data-nid="p2n3s0x100"></span>
+                <div class="chatMiddle">
+                    <div class="chatMessage">
+                        妹子，你也喜欢江南的书？
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="actionBar">
+        <div class="actionBarInner">
+            <form>
+                <span class="faceIcon"></span>
+                <input type="text" class="inputBox" />
+                <input type="submit" class="sendMessage" value="发送" />
+            </form>
+        </div>
+    </section>
+    <div class="faceBox">
+        <div class="faceMask"></div>
+        <div class="faceList">
+            <a class="face0" data-fid="/a"></a>
+            <a class="face1" data-fid="/b"></a>
+            <a class="face2" data-fid="/c"></a>
+            <a class="face3" data-fid="/d"></a>
+            <a class="face4" data-fid="/e"></a>
+            <a class="face5" data-fid="/f"></a>
+            <a class="face6" data-fid="/g"></a>
+            <a class="face7" data-fid="/h"></a>
+            <a class="face8" data-fid="/i"></a>
+            <a class="face9" data-fid="/j"></a>
+            <a class="face10" data-fid="/k"></a>
+            <a class="face11" data-fid="/l"></a>
+            <a class="face12" data-fid="/m"></a>
+            <a class="face13" data-fid="/n"></a>
+            <a class="face14" data-fid="/o"></a>
+            <a class="face15" data-fid="/p"></a>
+        </div>
+    </div>
+</div>
+
+<script src="js/zepto.js"></script>
+<script src="js/zcommon.js"></script>
+<script src="js/chatroom.js"></script>
+<script>
+    (function(D,W) {
+        var chatFn = CT.chat, ls = CT.fn.LS, loadStatusController = chatFn.loadStatusController,
+            ncInitLS = chatFn.commonLS.ncInit, ncOneLS = chatFn.commonLS.ncOne, ARQAjax = CT.ajax.ARQAjax;
+
+        //全局初始化
+        chatFn.commonInit();
+
+        //初始化
+        function init(){
+            var chats = $(''.chats),
+                chatList = $('.chatList'),
+                header = $('header'),
+                actionBar = $('.actionBar'),
+                tuidName = header.find('h1'),
+                bodyHeight = $(window).height(),
+                tuid = chatFn.getUidMsg(chatFn.getHash()[0]),
+                nickArr = chatFn.nickName,
+                identityData = chatFn.identity(ncInitLS),   //在common中判断验证并传过来有效的rid，uid
+                rid = identityData.rid,
+                uid = identityData.uid;
+
+            //uid和rid判断通过，开启key收发数据通道
+            chats.height(bodyHeight - header.height() - actionBar.height() + "px");
+            tuidName.html(nickArr[tuid.n] + tuid.x);   //初始化对方昵称+序号
+
+            //初始化聊天室，传入聊天室号
+            C({
+                rid: rid
+            });
+
+            //调用事件集
+            eventset();
+        }
+
+        //事件集
+        function eventset(){
+            var chatList = $('.chatList'),
+                chatroomIcon = $('.chatroomIcon'),
+                inputBox = $('.inputBox'),
+                faceIcon = $('.faceIcon'),
+                faceBox = $('.faceBox'),
+                chatPhoto = $('.chatPhoto'),
+                sendMessage = $('.sendMessage'),
+                rid = ls.selectLS("*", ncInitLS)[0][0].rid,
+                uid = ls.selectLS("*", ncInitLS)[0][0].uid,
+                tuid = chatFn.getHash()[0],
+                ts;
+
+            //表情事件
+            faceIcon.click(function(){
+                if(faceBox.hasClass('faceBoxShow')) {
+                    faceBox.removeClass('faceBoxShow');
+                }else{
+                    faceBox.addClass('faceBoxShow');
+                }
+            });
+            faceBox.bind("click", function (e) {
+                if(e.target.tagName == "A") {
+                    inputBox.val(inputBox.val() + e.target.attributes["data-fid"].value);
+                    faceBox.removeClass('faceBoxShow');
+                }
+            });
+
+            //提交消息----提交数据---inputvalue
+            sendMessage.click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                if(inputBox.val() == ""){
+                    inputBox.val('不能提交空消息');
+                }else{
+                    ts = new Date().getTime();
+                    chatFn.scrollToBottom = true;
+                    toolset.ui([{ts: ts, uid: uid,type: "one", detail: inputBox.val()}],1);
+                    toolset.send({
+                        ts: ts,
+                        rid: rid,
+                        uid: uid,
+                        type: "one",
+                        detail: inputBox.val(),
+                        tuid: tuid
+                    });
+                    inputBox.val('');    //清空输入框
+                }
+            });
+
+        }
+
+        var C = function(ownConfig){
+            chatInit(CT.extend({
+                defaultPage : "one",
+                tuid : location.hash.slice(1).split()[0],
+                oneTS : ls.selectLS("*", ncOneLS)[0][0]  //初始独聊时间
+            }, ownConfig),function(config, tool){
+                config.chatList.html('');   //清空聊天室内容
+                config.faceBox.removeClass('faceBoxShow');
+
+
+                //初始聊天时间,判断是否可以获取更多历史消息
+                if(config.oneTS[config.tuid] == undefined){  //暂无记录,记录当前时间为初始聊天时间,离开时间暂设为0
+                    ls.updateLS(config.tuid + '=[' + new Date().getTime() + ',0]', '*', ncOneLS);
+                }
+                config.enterRoomTS = ls.selectLS("*", ncOneLS)[0][0][config.tuid];  //传入时间
+
+                //5秒之后才记录成历史记录
+                console.log(config.oldts,config.enterRoomTS)
+                if(config.oldts - config.enterRoomTS > 5000){
+                    config.haveHistory = true;
+                    tool.history();
+                }
+
+                tool.scrollEvent();   //启动滚动判断
+                tool.polling();  //启动轮询
+            });
+        };
+
+        init();
+    })(document,window);
+</script>
+</body>
+</html>

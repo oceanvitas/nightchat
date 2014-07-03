@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>夜聊-消息</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="layout">
+    <header class="fixedHeader">
+        <a href="groupchat.html" class="returnIcon fl"></a>
+        <span class="placeholder fr"></span>
+        <h1>消息</h1>
+    </header>
+    <div class="selectBox">
+        <select class="selectSex">
+            <option value="all">--</option>
+            <option value="0">美铝</option>
+            <option value="1">帅锅</option>
+        </select>
+        <select class="selectKnow">
+            <option value="all">--</option>
+            <option value="0">已勾搭</option>
+            <option value="1">未相识</option>
+        </select>
+        <button class="selectButton">查询</button>
+    </div>
+    <ul class="messageList">
+        <li data-uid="p2n2s0x123">
+            <span class="mPicture"></span>
+            <div class="mDetail">
+                <div class="mNameSex">
+                    <span class="mName">美白富007</span>
+                    <i class="mSex"></i><!--默认女性，加mSexMale为男性-->
+                </div>
+                <span class="mTime">04:09</span>
+                <p class="mSendMessage">帅哥，你刚才说的真有意思，可以告诉 我一些详细的信息吗？</p>
+            </div>
+        </li>
+        <li data-uid="p2n2s1x123">
+            <span class="mPicture"></span>
+            <div class="mDetail">
+                <div class="mNameSex">
+                    <span class="mName">文艺青年002</span>
+                    <i class="mSex mSexMale"></i>
+                </div>
+                <span class="mTime">04:01</span>
+                <p class="mSendMessage">你不要再那么无聊黑我头像了？你真的 很弱智，受不鸟你了~~</p>
+            </div>
+        </li>
+        <li data-uid="p3n4s0x1453">
+            <span class="mPicture"></span>
+            <div class="mDetail">
+                <div class="mNameSex">
+                    <span class="mName">文艺青年061</span>
+                    <i class="mSex mSexMale"></i>
+                </div>
+                <span class="mTime">03:37</span>
+                <p class="mSendMessage">我是一个真诚的同性恋，可以聊聊吗？</p>
+            </div>
+        </li>
+        <li data-uid="p2n2s0x111">
+            <span class="mPicture"></span>
+            <div class="mDetail">
+                <div class="mNameSex">
+                    <span class="mName">土豪091</span>
+                    <i class="mSex"></i>
+                </div>
+                <span class="mTime">02:11</span>
+                <p class="mSendMessage">我们头像一样，名字也一样，相信我们 喜欢的东西也比较靠近哦~~</p>
+            </div>
+        </li>
+        <li data-uid="p6n2s1x345">
+            <span class="mPicture"></span>
+            <div class="mDetail">
+                <div class="mNameSex">
+                    <span class="mName">小纯洁026</span>
+                    <i class="mSex"></i>
+                </div>
+                <span class="mTime">03:37</span>
+                <p class="mSendMessage">你好，可以聊聊吗？</p>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<script src="js/zepto.js"></script>
+<script src="js/zcommon.js"></script>
+<script>
+    (function(D,W) {
+        var chatFn = CT.chat,
+            ls = CT.fn.LS,
+            ncInitLS = chatFn.commonLS.ncInit,
+            ARQAjax = CT.ajax.ARQAjax;
+
+        //全局初始化
+        chatFn.commonInit();
+
+        //初始target
+        var messageList = $('.messageList'),
+            selectSex = $('.selectSex'),
+            selectKnow = $('.selectKnow'),
+            selectButton = $('.selectButton'),
+            messageData = '';
+        //初始化
+        function init(){
+            var identityData = chatFn.identity(ncInitLS),   //在common中判断验证并传过来有效的rid，uid
+                rid = identityData.rid,
+                uid = identityData.uid;
+
+            //验证通过，清空内容
+            messageList.html('');
+            //获取成员列表重绘
+            ARQAjax({
+                url: chatFn.urls.messagemsg,
+                data: {
+                    uid: uid
+                },
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    messageData = data;
+                    messageUI(selectSex.val(),selectKnow.val());
+                },
+                error: function(){ }
+            });
+            eventset();
+        }
+        init();
+
+        //事件集eventset
+        function eventset(){
+            //筛选内容
+            selectButton.click(function(){
+                messageUI(selectSex.val(),selectKnow.val());
+            });
+            //内容列表点击跳转到独聊页面
+            messageList.bind("click",function(e){
+                var etarget = e.target;
+                while(etarget !== this){
+                    if(etarget.nodeName == 'LI'){
+                        var uid = etarget.attributes["data-uid"].value;
+                        location.replace("onechat.html#" + uid);
+                        break;
+                    }
+                    etarget = etarget.parentNode;
+                }
+            })
+        }
+        //UI层
+        function messageUI(sex,know){
+            var liElem = $('<li></li>'),
+                nickArr = chatFn.nickName;
+            messageList.html('');   //清空列表
+            //没有数据则返回
+            if(messageData == ""){
+                return;
+            }
+            for(var i = 0,len = messageData.length;i < len; i++){
+                var liClone = liElem.clone(),
+                    usermsg = chatFn.getUidMsg(messageData[i].uid),
+                    lsdata = ls.selectLS("*", ncInitLS)[0],
+                    talked = lsdata[0].talked,
+                    userName = "",
+                    userTime = "",
+                    sexElem = null,
+                    photoElem = null,
+                    content = "";
+                //根据select值筛选内容
+                if(sex != "all" && usermsg.s != sex){   //性别非默认，对比是否是选择性别，不是则返回
+                    continue
+                }
+                if(know == "0" && !talked.match(messageData[i].uid)){  //已勾搭
+                    continue
+                }else if(know == "1" && talked.match(messageData[i].uid)){  //未相识
+                    continue
+                }
+                //取得uid的值，拼接出昵称+序号
+                userName = nickArr[usermsg.n] + usermsg.x;
+                //取得时间戳，获得小时:分钟
+                userTime = new Date(parseInt(messageData[i].ts/1000) * 1000).toLocaleString().match(/\d+:\d+/gi)[0];
+                //表情替换
+                content = messageData[i].detail.replace(/\/[a-p]{1}/gi,function(word){
+                    return "<img class='faceimg' src='images/face"+ word +".png' />";
+                });
+                //设置li内容
+                liClone.attr('data-uid',messageData[i].uid);
+                liClone.html('<span class="mPicture"></span><div class="mDetail"><div class="mNameSex"><span class="mName">'+
+                        userName +'</span><i class="mSex"></i></div><span class="mTime">'+
+                        userTime +'</span><p class="mSendMessage">'+ content +'</p></div>');
+
+                sexElem = liClone.find('.mSex');
+                photoElem = liClone.find('.mPicture');
+                photoElem.css({"background":"url(images/picture/small/"+ usermsg.p +".jpg) no-repeat","backgroundSize":"33px"});
+                if(usermsg.s == "1"){ //性别图标区分
+                    sexElem.addClass('mSexMale');
+                }
+                messageList.append(liClone);
+            }
+
+
+        }
+    })(document,window)
+</script>
+</body>
+</html>

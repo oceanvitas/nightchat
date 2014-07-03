@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>夜聊-成员</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="layout">
+    <header class="fixedHeader">
+        <a href="groupchat.html" class="returnIcon fl"></a>
+        <span class="placeholder fr"></span>
+        <h1>通讯录</h1>
+    </header>
+    <div class="selectBox">
+        <select class="selectSex">
+            <option value="all">--</option>
+            <option value="0">美铝</option>
+            <option value="1">帅锅</option>
+        </select>
+        <select class="selectKnow">
+            <option value="all">--</option>
+            <option value="0">屌丝</option>
+            <option value="1">2B青年</option>
+            <option value="2">美白富</option>
+            <option value="3">文艺青年</option>
+        </select>
+        <button class="selectButton">查询</button>
+    </div>
+    <ul class="memberList">
+        <li data-uid="p0n0s0x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">美白富007</span>
+                    <i class="mSex"></i><!--默认女性，加mSexMale为男性-->
+                </div>
+                <p class="mLastMessage">“哈哈，大家都不说话了！”</p>
+            </div>
+        </li>
+        <li data-uid="p0n2s1x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">文艺青年002</span>
+                    <i class="mSex mSexMale"></i>
+                </div>
+                <p class="mLastMessage">“不如聊点正经的吧！”</p>
+            </div>
+        </li>
+        <li data-uid="p0n3s0x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">土豪002</span>
+                    <i class="mSex"></i>
+                </div>
+                <p class="mLastMessage">“美女哇，流口水中，不过...”</p>
+            </div>
+        </li>
+        <li data-uid="p0n0s1x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">文艺青年02</span>
+                    <i class="mSex mSexMale"></i>
+                </div>
+                <p class="mLastMessage">发了一张图</p>
+            </div>
+        </li>
+        <li data-uid="p5n0s0x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">小纯洁036</span>
+                    <i class="mSex"></i>
+                </div>
+                <p class="mLastMessage">“那算美女吗，尖嘴猴腮的...”</p>
+            </div>
+        </li>
+        <li data-uid="p0n6s0x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">土豪091</span>
+                    <i class="mSex"></i>
+                </div>
+                <p class="mLastMessage">“下巴要戳破纸张了”</p>
+            </div>
+        </li>
+        <li data-uid="p0n4s1x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">小纯洁123</span>
+                    <i class="mSex mSexMale"></i>
+                </div>
+                <p class="mLastMessage">“这妹子整容得用力过猛了...”</p>
+            </div>
+        </li>
+        <li data-uid="p4n7s0x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">2B青年003</span>
+                    <i class="mSex mSexMale"></i>
+                </div>
+                <p class="mLastMessage">“笑而不语~”</p>
+            </div>
+        </li>
+        <li data-uid="p3n4s0x111">
+            <span class="mPicture"></span>
+            <div class="mMessage">
+                <div class="mNameSex">
+                    <span class="mName">美白富004</span>
+                    <i class="mSex mSexMale"></i>
+                </div>
+                <p class="mLastMessage">“我觉得她很好看丫~~”</p>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<script src="js/zepto.js"></script>
+<script src="js/zcommon.js"></script>
+<script>
+    (function(D,W) {
+        var chatFn = CT.chat,
+            ls = CT.fn.LS,
+            ncInitLS = chatFn.commonLS.ncInit,
+            ARQAjax = CT.ajax.ARQAjax;
+
+        //全局初始化
+        chatFn.commonInit();
+
+        //初始target
+        var memberList = $('.memberList'),
+            selectSex = $('.selectSex'),
+            selectKnow = $('.selectKnow'),
+            selectButton = $('.selectButton'),
+            memberData = "";
+        //初始化
+        function init(){
+            var identityData = chatFn.identity(ncInitLS),   //在common中判断验证并传过来有效的rid，uid
+                rid = identityData.rid,
+                uid = identityData.uid;
+
+            //验证通过，清空内容
+            memberList.html('');
+            //获取成员列表重绘
+            ARQAjax({
+                url: chatFn.urls.membermsg,
+                data: {
+                    rid: rid
+                },
+                dataType: 'json',
+                cache: false,
+                success: function (data) {
+                    memberData = data;
+                    memberUI(selectSex.val(), selectKnow.val());
+                },
+                error: function(){ }
+            });
+            eventset();
+        }
+        init();
+
+        //事件集eventset
+        function eventset(){
+            //筛选内容
+            selectButton.click(function(){
+                memberUI(selectSex.val(), selectKnow.val());
+            });
+            //内容列表点击跳转到独聊页面
+            memberList.bind("click",function(e){
+                var etarget = e.target;
+                while(etarget !== this){
+                    if(etarget.nodeName == 'LI'){
+                        var uid = etarget.attributes["data-uid"].value;
+                        location.replace("onechat.html#" + uid);
+                        break;
+                    }
+                    etarget = etarget.parentNode;
+                }
+            },false);
+        }
+        //UI层
+        function memberUI(sex,know){
+            var liElem = $('<li></li>'),
+                nickArr = chatFn.nickName;
+            memberList.html('');   //清空列表
+            //没有数据则返回
+            if(memberData == ""){
+                return;
+            }
+            for(var i = 0,len = memberData.length;i < len; i++){
+                var liClone = liElem.clone(),
+                    usermsg = chatFn.getUidMsg(memberData[i].uid),
+                    userName = "",
+                    sexElem = null,
+                    photoElem = null,
+                    content = "";
+                //不输出自己
+                if(memberData[i].uid == ls.selectLS("*", ncInitLS)[0][0].uid){
+                    continue;
+                }
+                //根据select值筛选内容
+                if(sex != "all" && usermsg.s != sex){   //性别非默认，对比是否是选择性别，不是则返回
+                    continue;
+                }
+                if(know != "all" && usermsg.n != know){  //昵称非默认，对比是否是选择昵称，不是则返回
+                    continue;
+                }
+                //取得uid的值，拼接出昵称+序号
+                userName = nickArr[usermsg.n] + usermsg.x;
+                //表情替换
+                content = memberData[i].detail.replace(/\/[a-p]{1}/gi,function(word){
+                    return "<img class='faceimg' src='images/face"+ word +".png' />";
+                });
+                //设置li内容
+                liClone.attr('data-uid',memberData[i].uid);
+                liClone.html( '<span class="mPicture"></span><div class="mMessage"><div class="mNameSex"><span class="mName">'+
+                        userName +'</span><i class="mSex"></i></div><p class="mLastMessage">'+
+                        content +'</p></div>');
+
+                sexElem = liClone.find('.mSex');
+                photoElem = liClone.find('.mPicture');
+                photoElem.css({"background":"url(images/picture/small/"+ usermsg.p +".jpg) no-repeat","backgroundSize":"33px"});
+                if(usermsg.s == "1"){ //性别图标区分
+                    sexElem.addClass('mSexMale');
+                }
+                memberList.append(liClone);
+            }
+
+
+        }
+    })(document,window)
+</script>
+</body>
+</html>

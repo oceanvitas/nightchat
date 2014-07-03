@@ -1,0 +1,228 @@
+@charset "utf-8";
+/* -----------CSS reset------------ */
+body,dl,dd,p,h2,form,h1 { margin:0;}
+ol,ul { margin:0; padding:0; list-style:none;}
+html{ font: 12px/1.5 'microsoft yahei';}
+input,button { background: #FFF9FB; font: 12px/1.5 'microsoft yahei';}
+input,textarea,select,button { font-size: 12px; outline: none;}
+a,a:hover{ text-decoration:none; color:#6A6667;}
+i { font-style:normal;}
+
+/* -----------CSS common------------ */
+body{ background: #2B2B2B; color: #FFFCFA;}
+.layout{ min-width: 320px;}
+img {max-width: 100%;}
+.fl{ float: left;}
+.fr{ float: right;}
+
+/* -----------CSS header------------ */
+header{ width: 96%; height: 45px; padding: 0 2%; border-bottom: #151515 1px solid; box-shadow: 0 1px 1px #2e2f33, 0 -2px 2px #2C2C2C inset;
+    background: #27282c; background:-moz-linear-gradient(top,#2a2b2f,#1f2024 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#2a2b2f),to(#1f2024));
+}
+.fixedHeader{ position: fixed; top: 0; left: 0;}
+h1 { line-height: 45px; font-size:20px; font-weight: normal; text-align: center;}
+.sidebarIcon{ display: inline-block; width: 30px; height: 30px; margin-top: 10px; background: url("../images/setup.png") no-repeat; background-size: 30px; cursor: pointer;}
+.messageIcon{ display: inline-block; width: 30px; height: 25px; margin-top: 10px; background: url("../images/mail.png") no-repeat; background-size: 29px; cursor: pointer;}
+.returnIcon{ display: inline-block; width: 30px; height: 25px; margin-top: 10px; background: url("../images/arrowL.png") center no-repeat; background-size: 15px; cursor: pointer;}
+.placeholder{ display: inline-block; width: 30px; height: 30px;}
+.chatroomIcon{ margin: 10px 0 0 5px; padding-right: 10px; font-size: 18px; background: url("../images/arrowSRB.png") right bottom no-repeat; background-size: 8px; cursor: pointer;}
+.memberIcon{ display: inline-block; width: 30px; height: 25px; margin: 10px 0 0 10px; background: url("../images/member.png") center no-repeat; background-size: 29px; cursor: pointer;}
+.homeIcon{ display: inline-block; width: 30px; height: 25px; margin-top: 10px; background: url("../images/home.png") center no-repeat; background-size: 30px;}
+/* -----------主页------------ */
+.mainBox{ position: relative; z-index: 100; zoom: 1; background: #3B3B3B;
+    -moz-transition: -moz-transform .2s ease-out; -webkit-transition: -webkit-transform .2s ease-out; -o-transition: -o-transform .2s ease-out; transition: transform .2s ease-out;}
+.chatBox{ overflow: hidden; max-width: 480px; margin: 10px auto;}
+.chatBox img{ position: relative; z-index: -1; display: block;}
+.chatBoxLeft{ width: 61.5%; margin: 0 1% 0 2%;}
+.chatBoxRight{ width: 32.5%; height: 100px; margin: 0 2% 0 1%;}
+.chatBox li { position: relative; margin-bottom: 15px; box-shadow: 3px 3px 2px #333333,-3px -3px 2px #333333; cursor: pointer;}
+.chatRoomType2{ float: left; width: 48.38709%;}
+.chatRoomType2:nth-child(odd){ float: right;}
+.chatBox .ctitle{ position: absolute; top: 10px; left: 10px; text-shadow:2px 2px 2px #9C9C9A;  font-size: 20px;}
+.chatBox .cnum{ position: absolute; bottom: -2px; right: -1px; display: inline-block; overflow: hidden; width: 47px; height: 46px; padding-right: 3px; text-align: right; line-height: 65px; background: url("../images/shadow.png") no-repeat; background-size: 50px; color: #FFFCFA;}
+.chatBox .cdesc{ position: absolute; left: 20px; bottom: 15px; text-shadow:2px 2px 2px #9C9C9A; font-size: 16px;}
+.openTips{ display: none; height: 60px; margin: 20px auto; padding-left: 85px; background: url("../images/tips.jpg") 20px center no-repeat; background-size: 60px; line-height: 60px; font-size: 16px;}
+.openTips a{ color: #fff; font-size: 16px; text-decoration: underline;}
+/* -----------侧栏------------ */
+.sideBar{ display: none; position: absolute; z-index: 99; top: 0; left: 0; width: 270px; height: 100%;  background: #242424;}
+.sideBarList li{ height: 45px; padding: 0 5%; border-bottom: #1A1A1A 1px solid; box-shadow: 0 1px 0 #2E2E2E;}
+.controlTitle{ float: left; padding-left: 25px; line-height: 45px; font-size: 15px;}
+.contorolR{ float: right;}
+.newMgeCtl .controlTitle{ background: url("../images/message.png") left center no-repeat; background-size: 18px;}
+.messageCheck{ float: right; display: inline-block; width: 25px; height: 25px; margin-top: 10px; border-radius: 3px; box-shadow: 1px 1px 0 #2D2D2D;
+    background: #151515; background:-moz-linear-gradient(top,#121212,#181818 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#121212),to(#181818));
+}
+.messageCheck span{ display: inline-block; width: 25px; height: 25px; background: url("../images/right.png") center no-repeat; background-size: 18px;}
+.voiceCtl .controlTitle{ background: url("../images/voice.png") left center no-repeat; background-size: 20px;}
+.switch{ position: relative; display: inline-block; float: right; width: 68px; height: 32px; line-height: 32px; margin-top: 6px; border-radius: 16px; border-bottom: #313131 1px solid; border-right: #313131 1px solid; box-shadow: -1px -1px 1px #141414 inset; cursor: pointer; font-size: 14px;
+    background: #1A1A1A; background:-moz-linear-gradient(top,#141414,#1E1E1E 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#141414),to(#1E1E1E));
+}
+.switch .open{ margin-left: 10px;}
+.switch .close{ float: right; margin-right: 10px;}
+.switch .cover{ display: inline-block; position: absolute; right: 2px; top: 1px; z-index: 2; width: 30px; height: 30px; background: url("../images/cover.png") no-repeat; background-size: 30px; }
+.switch .covered{ right: auto; left: 2px;}
+.shockCtl .controlTitle{ background: url("../images/shock.png") left center no-repeat; background-size: 20px;}
+.lightCtl .controlTitle{ background: url("../images/light.png") left center no-repeat; background-size: 20px;}
+.progress{ position: relative; float: right; width: 65%; margin-top: 22px; border-top: #191919 1px solid; box-shadow:  0 1px 0 #2D2D2D;}
+.progress .rate{ position: absolute; top: -1px; left: 0; display: inline-block; width: 60%; height: 2px; background: #FEF4EA;}
+.progress .rate i{ float: right; display: inline-block; width: 15px; height: 15px; margin: -7px -7px 0 0; background: url("../images/lightDot.png") center no-repeat; background-size: 15px;}
+
+/* -----------身份识别页------------ */
+.userInfor{  margin: 0 auto 20px; padding-bottom: 20px; border-bottom: #242424 1px solid; box-shadow: 0 1px 0px #353535; text-align: center;}
+.userPhoto{ width: 170px; height: 170px; margin: 40px auto 15px;}
+.userIdent{}
+.userName{ display: inline-block; height: 33px; line-height: 33px; margin-right: 10px; color: #fff; font-size: 20px;}
+.userSex{ position: relative; display: inline-block; width: 68px; height: 32px; margin-bottom: -10px; border-radius: 16px; border-bottom: #373737 1px solid; border-right: #373737 1px solid; box-shadow: -1px -1px 1px #1B1B1B inset; cursor: pointer;
+    background: #232323; background:-moz-linear-gradient(top,#1C1C1C,#282828 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#1C1C1C),to(#282828));
+}
+.userSex i{ display: inline-block; position: absolute;}
+.userSex .male{ left: 7px; top: 5px; width: 20px; height: 20px; background: url("../images/male.png") no-repeat; background-size: 20px;}
+.userSex .female{ right: 7px; top: 5px; width: 20px; height: 22px; background: url("../images/female.png") no-repeat; background-size: 18px;}
+.userSex .cover{ left: 2px; top: 1px; z-index: 2; width: 30px; height: 30px; background: url("../images/cover.png") no-repeat; background-size: 30px; }
+.userSex .coverMale{ left:auto; right: 2px;}
+.chooseBox{ overflow: hidden; max-width: 480px; margin: 0 auto 20px;}
+.chooseBox li{ display: block; float: left; margin-right: 10px; cursor: pointer;}
+.chooseTip{ display: inline-block; float: left; width: 15%; height: 30px; line-height: 30px; margin-right: 3%; text-align: center; border: #242424 1px solid; border-left: none; border-radius: 0 15px 15px 0; box-shadow: -1px 0 0 #474747 inset; font-size: 14px;
+    background: #353535; background:-moz-linear-gradient(top,#373737,#333333 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#373737),to(#333333));
+}
+.slideMore{ display: inline-block; float: right; width: 5%; height: 20px; margin: 7px 2% 0 0; background: url("../images/arrowR.png") center no-repeat; background-size: 12px; cursor: pointer;}
+.slideContent{ overflow: hidden; position: relative; float: left; display: inline-block; width: 73%; height: 33px;}
+.slideContent ul{}
+.choosePhoto li{ position: relative; width: 33px; height: 33px;}
+.choosePhoto img{ position: relative; z-index: -1;}
+.choosePhoto i{ display: none; position: absolute; bottom: 0; left: 0; width: 33px; height: 14px; border-radius: 0 0 16px 16px; background: #1E1E1E url("../images/right.png") center no-repeat; background-size: 12px;}
+.chooseName li{ position: relative; line-height: 33px; font-size: 14px;}
+.nameCur{ height: 28px; padding-bottom: 3px; border-bottom: #fff 2px solid;}
+.photoCur i{ display: inline-block;}
+.identButton{ display: block; height: 50px; line-height: 50px; background: #4F4F4F; box-shadow:  0 1px 0 #353535 inset; color: #2B2B2B; font-size: 16px; text-align: center; cursor: pointer;}
+.identSure{ background: #D7D7D7; background:-moz-linear-gradient(top,#E7E7E7,#CECECE 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#E7E7E7),to(#CECECE)); }
+
+/* -----------消息------------ */
+.selectBox{ height: 45px; background: #4A4A4A; padding: 0 5%; margin-top: 47px; text-align: center;}
+.selectBox select{ width: 33%; height: 32px; margin: 6px 0 0; padding: 5px 10px; background: #2C2C2C; border: none; border-radius: 3px; box-shadow: 0 1px 0 #232323 inset; color: #FFFCFA; font-size: 14px;}
+.selectBox select:nth-child(1){ margin-right: 2%;}
+.selectBox option{ background: #2C2C2C;}
+.selectButton{ width: 25%; height: 32px; margin-left: 2%; border: #111111 1px solid; border-radius: 3px; color: #fff; font-size: 14px;  box-shadow: 0 2px 0 #393939 inset; cursor: pointer;
+    background: #1A1A1A; background:-moz-linear-gradient(top,#222222,#151515 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#222222),to(#151515));
+}
+.messageList{}
+.messageList li{ padding: 10px 10px 5px; border-bottom: #282828 1px solid; box-shadow: 0 1px 0 #3D3D3D; background: url("../images/arrowR.png") 98% 10px no-repeat; background-size: 10px; }
+.mPicture{ float: left; display: inline-block; width: 33px; height: 33px; margin-right: 10px; background: url("../images/picture/small/0.jpg") no-repeat; background-size: 33px;}
+.mDetail{ display: inline-block; width: 82%;}
+.mNameSex{ float: left; display: inline; margin-bottom: 5px;}
+.mName{ font-size: 16px; opacity: 0.6; color: #efefef;}
+.mSex{ display: inline-block; width: 12px; height: 13px; background: url("../images/female.png") center no-repeat; background-size: 11px;}
+.mSexMale{ background-image: url("../images/male.png");}
+.mTime{ float: right; color: #7A7A7A;}
+.mSendMessage{ overflow: hidden; clear: both; color: #a2a2a2; font-size: 14px; line-height: 22px;}
+.mSendMessage .faceimg{ width: 30px; margin: 0 4px;}
+/* -----------成员------------ */
+.memberList li{ overflow: hidden; display:block; padding: 10px 10px 5px;}
+.mMessage{ display: inline-block; width: 85%; padding-bottom: 5px;  border-bottom: #282828 1px solid; box-shadow: 0 1px 0 #3D3D3D;}
+.mMessage .mNameSex{ width: 45%; margin-right: 1%;}
+.mLastMessage{ overflow: hidden; float: left; width: 54%; height: 28px; line-height: 28px; color: #9C9C9C; font-size: 14px; white-space: nowrap;text-overflow: ellipsis;}
+.mLastMessage .faceimg{ width: 30px; margin: 0 4px;}
+/* -----------聊天室------------ */
+.chats{ overflow-y: auto; -webkit-overflow-scrolling:touch; margin-top: 47px;}
+.chatList{ margin: 10px; padding-bottom: 20px;}
+.chatCon{ position: relative; zoom: 1; margin-bottom: 15px;}
+.chatCon:after{ display:block; clear:both; content:""; visibility:hidden; height:0;}
+.chatPhoto{ float: left; display: inline-block; width: 33px; height: 33px; margin-right: 15px; background: url("../images/picture/small/0.jpg") no-repeat; background-size: 33px; cursor: pointer;}
+.chatMiddle{ float: left; display: inline-block; width: 83%;}
+.chatName{ display: block; font-size: 14px; color: #797979;}
+.chatMessage{ position: relative; float: left; display: inline-block; max-width: 75%; min-height: 32px; margin-top: 5px; padding: 2px 3%;  background: #464646; border-radius: 4px; box-shadow: 0 1px 0 #4C4C4C inset; font-size: 16px; line-height: 32px; word-wrap: break-word;}
+.chatMessage a{ color: #79b3e9;}
+.chatMessage img.robotimg{ display: block; max-width: 100%; margin: 8px auto;}
+.chatMessage img.faceimg{ width: 35px; margin: 0 4px; vertical-align: middle;}
+.chatMessage:before{ display: block; position: absolute; top: 9px; left: -9px; width: 10px; height: 15px; content: ""; background: url("../images/chatLeft.png") center no-repeat; background-size: 10px;}
+.addGood{ float: left; overflow: hidden; display: inline-block; width: 35px; height: 35px; margin: 5px 0 0 8px; border: #202020 1px solid; border-radius: 4px; box-shadow: 0 1px 0 #3D3D3D inset; text-align: center; cursor: pointer;
+    background: #282828; background:-moz-linear-gradient(top,#2C2C2C,#222222 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#2C2C2C),to(#222222));
+}
+.addGood span{ display: block; margin-top: 4px; padding-top: 13px; background: url("../images/praise.png") top center no-repeat; background-size: 12px; color: #767676; opacity: 0.6;}
+.myChat .chatMessage:before{ display: none;}
+.myChat .chatMessage:after{ display: block; position: absolute; top: 9px; right: -9px; width: 10px; height: 15px; content: ""; background: url("../images/chatRight.png") center no-repeat; background-size: 10px;}
+.myChat .chatPhoto, .myChat .chatMiddle, .myChat .addGood, .myChat .chatMessage{ float: right;}
+.myChat .chatPhoto{ margin:5px 0 0 15px;}
+.myChat .addGood{  margin: 5px 8px 0 0;}
+
+.operateList{ display: none; position: absolute; top: -45px; left: 10px;}
+.operateListShow{ display: block;}
+.operateList a{ display: inline-block; position: absolute; width: 45px; height: 45px; background: url("../images/obg.png") no-repeat; background-size: 45px; text-align: center; cursor: pointer;}
+.operateList i{ display: inline-block; width: 18px; height: 20px; margin-top: 12px; }
+.Oat i{ background: url("../images/at.png") center no-repeat; background-size: 18px;}
+.Oskull i{ background: url("../images/skull.png") center no-repeat; background-size: 18px;}
+.Onovoice i{ background: url("../images/novoice.png") center no-repeat; background-size: 18px;}
+.Oat{ top: 0; left: 0;}
+.Oskull{ top: 28px; left: 37px;}
+.Onovoice{ top: 70px; left: 29px;}
+
+.menuList{ display: none; position: absolute; top: 45px; left: 25px; width: 110px; background: #292929; font-size: 15px;}
+.menuList li{ height: 40px; line-height: 40px; padding: 0 15px; border-bottom: #1C1C1C 1px solid; box-shadow: 0 2px 0 #333333; cursor: pointer;}
+.menuListShow{ display: block;}
+
+.actionBar{ position: fixed; bottom: 0; left: 0; width: 100%; height: 47px;}
+.actionBarInner{ height: 45px; padding: 0 75px 0 42px; background: #1B1B1B; border: #090909 1px solid; box-shadow: 1px 1px 0 #2D2D2D inset,-1px -1px 0 #2D2D2D inset;}
+.faceIcon{ position: absolute; top: 2px; left: 5px; display: inline-block; width: 33px; height: 34px; margin-top: 4px; background: url("../images/face.png") center no-repeat; background-size: 33px; cursor: pointer;}
+.inputBox{ width: 100%; height: 32px; margin: 5px 0; padding: 0; background: #FAFAFA; border: #CED2D6 1px solid; border-radius: 3px;}
+.sendMessage{ position: absolute; top: 1px; right: 7px; width: 60px; height: 34px; margin-top: 5px; border: #BEBEBE 1px solid; color: #1B1B1B; font-size: 14px; border-radius: 3px; text-align: center;
+    background: #C2C2C2; background:-moz-linear-gradient(top,#D5D5D5,#AEAEAE 100%);background:-webkit-gradient(linear,0 0,0 100%,from(#D5D5D5),to(#AEAEAE));
+}
+
+.faceBox{ display: none; position: fixed; left: 0; bottom: 47px; width: 100%;}
+.faceBoxShow{ display: block;}
+.faceMask{ height: 82px; background: #282828;}
+.faceList{ position: absolute; top: 0; left: 0; width: 100%;}
+.faceList a{ display: block; float: left; width: 12.5%; height: 40px; border-top: #212121 1px solid; border-right: #212121 1px solid; box-shadow: 1px 1px 0 #363636 inset; cursor: pointer;
+    box-sizing:border-box; -moz-box-sizing:border-box; -webkit-box-sizing:border-box;
+}
+.face0{ background: url("../images/face/a.png") center no-repeat; background-size: 32px;}
+.face1{ background: url("../images/face/b.png") center no-repeat; background-size: 32px;}
+.face2{ background: url("../images/face/c.png") center no-repeat; background-size: 32px;}
+.face3{ background: url("../images/face/d.png") center no-repeat; background-size: 32px;}
+.face4{ background: url("../images/face/e.png") center no-repeat; background-size: 32px;}
+.face5{ background: url("../images/face/f.png") center no-repeat; background-size: 32px;}
+.face6{ background: url("../images/face/g.png") center no-repeat; background-size: 32px;}
+.face7{ background: url("../images/face/h.png") center no-repeat; background-size: 32px;}
+.face8{ background: url("../images/face/i.png") center no-repeat; background-size: 32px;}
+.face9{ background: url("../images/face/j.png") center no-repeat; background-size: 32px;}
+.face10{ background: url("../images/face/k.png") center no-repeat; background-size: 32px;}
+.face11{ background: url("../images/face/l.png") center no-repeat; background-size: 32px;}
+.face12{ background: url("../images/face/m.png") center no-repeat; background-size: 32px;}
+.face13{ background: url("../images/face/n.png") center no-repeat; background-size: 32px;}
+.face14{ background: url("../images/face/o.png") center no-repeat; background-size: 32px;}
+.face15{ background: url("../images/face/p.png") center no-repeat; background-size: 32px;}
+
+.loadMore{ display: none; margin: 10px auto; text-align: center; font-size: 14px; cursor: pointer;}
+/* loadStatus */
+.loadStatus { display:none; height:22px; line-height:22px; padding:18px 0; text-align:center; font-size:16px; color:#fff; }
+.loadStatusCircle {
+    background-color:rgba(0,0,0,0);/*背景颜色，rgba格式，不多说*/
+    opacity:.9;/*整体透明90%*/
+    border:4px solid rgba(255,255,255,0.4);
+    border-left:4px solid rgba(255,255,255,0.8);/*同上*/
+    border-radius:50px;/*边框为圆角*/
+    /*box-shadow:0 0 8px rgba(255,255,255,0.4), 0 0 6px rgba(255,255,255,0.2) inset;*/
+    width:14px;
+    height:14px;
+    margin:0 5px 0 0 ;
+    display:inline-block;
+    vertical-align: top;
+    -moz-animation:spinPulse 1s infinite ease-in-out;
+    /*moz内核可读，采用spinPulse动画，动画周期1s，infinite代表动画循环，ease-in-out是动画过渡效果*/
+    -webkit-animation:spinPulse 1s infinite linear;/*webkit内核可读，其他同上*/
+}
+@-moz-keyframes spinPulse {
+    0% {-moz-transform:rotate(0deg)}
+    100% {-moz-transform:rotate(720deg)}
+}
+@-webkit-keyframes spinPulse {
+    0% {-webkit-transform:rotate(0deg)}
+    100% {-webkit-transform:rotate(720deg)}
+}
+/* END loadStatus */
+
+/* -----------向下兼容------------ */
+@media only screen and ( max-width:370px ) {
+    .chatBox li { margin-bottom: 11px;}
+    .chatBox .ctitle{ top: 5px; left: 5px; font-size: 16px;}
+}

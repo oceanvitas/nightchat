@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>夜聊</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="layout">
+    <div class="sideBar">
+        <ul class="sideBarList">
+            <li class="newMgeCtl">
+                <span class="controlTitle">新消息接收</span>
+                <div class="messageCheck"><span></span></div>
+            </li>
+            <li class="voiceCtl">
+                <span class="controlTitle">声音</span>
+                <div class="switch fr">
+                    <span class="open">开</span>
+                    <span class="close">关</span>
+                    <i class="cover"></i><!-- covered-->
+                </div>
+            </li>
+            <li class="shockCtl">
+                <span class="controlTitle">震动</span>
+                <div class="switch fr">
+                    <span class="open">开</span>
+                    <span class="close">关</span>
+                    <i class="cover"></i>
+                </div>
+            </li>
+            <li class="lightCtl">
+                <span class="controlTitle">亮度</span>
+                <div class="progress">
+                    <span class="rate"><i></i></span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="mainBox">
+        <header>
+            <span class="placeholder fl"></span>
+            <span class="sidebarIcon fl" style="display:none;"></span>
+            <a href="message.html" class="messageIcon fr"></a>
+            <h1>夜聊</h1>
+        </header>
+        <div class="openTips"></div>
+        <div class="chatBox">
+            <ul class="chatBoxLeft fl">
+                <li class="chatRoomType1" data-rid="0">
+                    <img src="images/indexpic/goddess.jpg" />
+                    <span class="ctitle">女神</span>
+                    <i class="cnum">999+</i>
+                    <p class="cdesc">这些年梦到的女神</p>
+                </li>
+                <li class="chatRoomType2" data-rid="1">
+                    <img src="images/indexpic/heavenly.jpg" />
+                    <span class="ctitle">天朝</span>
+                    <i class="cnum">99+</i>
+                </li>
+                <li class="chatRoomType2" data-rid="2">
+                    <img src="images/indexpic/dream.jpg" />
+                    <span class="ctitle">梦想</span>
+                    <i class="cnum">65</i>
+                </li>
+                <li class="chatRoomType2" data-rid="3">
+                    <img src="images/indexpic/gossip.jpg" />
+                    <span class="ctitle">八卦</span>
+                    <i class="cnum">45</i>
+                </li>
+                <li class="chatRoomType2" data-rid="4">
+                    <img src="images/indexpic/bookstore.jpg" />
+                    <span class="ctitle">书城</span>
+                    <i class="cnum">88</i>
+                </li>
+            </ul>
+            <ul class="chatBoxRight fr">
+                <li class="chatRoomType3" data-rid="5">
+                    <img src="images/indexpic/emotion.jpg" />
+                    <span class="ctitle">情感</span>
+                    <i class="cnum">99+</i>
+                </li>
+                <li class="chatRoomType3" data-rid="6">
+                    <img src="images/indexpic/live.jpg" />
+                    <span class="ctitle">直播</span>
+                    <i class="cnum">99+</i>
+                </li>
+                <li class="chatRoomType3" data-rid="7">
+                    <img src="images/indexpic/hollow.jpg" />
+                    <span class="ctitle">树洞</span>
+                    <i class="cnum">999+</i>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script src="js/zepto.js"></script>
+<script src="js/zcommon.js"></script>
+<script>
+    (function(D,W) {
+        var chatFn = CT.chat,
+            ls = CT.fn.LS,
+            ncInitLS = chatFn.commonLS.ncInit,
+            translate3d = CT.css.translate3d;   //此方法需要传入DOM对象
+
+        //全局初始化
+        chatFn.commonInit();
+
+        function init(){
+            var messageIcon = $('.messageIcon'),
+                chatBox = $('.chatBox'),
+                ts = new Date().getTime(),
+                identityData = chatFn.identity(ncInitLS),   //在common中判断验证并传过来有效的rid，uid
+                rid = identityData.rid,
+                uid = identityData.uid;
+
+            //聊天室选择
+            chatBox.bind('click', function(e) {
+                if(e.target.tagName == "LI") {    //已有身份uid，跳转到相应聊天室页
+                    if(!chatFn.isOpenTime()){    //如果不是开放时间则不可跳转
+                        return;
+                    }
+                    rid = e.target.attributes["data-rid"].value;
+                    ls.updateLS("rid=" + rid, "*", ncInitLS);
+                    location.replace("groupchat.html");
+                }
+            });
+
+            //调用侧边栏事件
+            //sideTool();
+
+        }
+
+        //侧边工具栏事件
+        function sideTool(){
+            var mainBox = $('.mainBox'),
+                sideBarIcon = $('.sidebarIcon'),
+                sideBar = $('.sideBar'),
+                //sideBarWidth = sideBar.style.width,
+                iShow = false;
+            //点击展开侧边栏
+            sideBarIcon.click(function(){
+                iShow = true;
+                sideBar.show();
+                translate3d(mainBox.get(0), "270px", 0, 0);
+            });
+            sideBar.click(function(){
+                iShow = false;
+                sideBar.hide();
+                translate3d(mainBox.get(0), "0px", 0, 0);
+            });
+
+
+        };
+        init();
+    })(document,window);
+</script>
+</body>
+</html>

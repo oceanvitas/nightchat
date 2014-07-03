@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>夜聊-群聊</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content=""/>
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="msapplication-tap-highlight" content="no" />
+    <link type="text/css" rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="layout">
+    <header class="fixedHeader">
+        <a href="index.html" class="returnIcon fl"></a>
+        <span class="chatroomIcon fl">女神聊天室</span>
+        <a href="member.html" class="memberIcon fr"></a>
+        <a href="message.html" class="messageIcon fr"></a>
+    </header>
+    <section class="chats">
+        <div class="loadMore">更多消息</div>
+        <div class="chatList">
+        </div>
+        <div class="loadStatus"></div>
+    </section>
+    <section class="actionBar">
+        <div class="actionBarInner">
+            <form>
+                <span class="faceIcon"></span>
+                <input type="text" class="inputBox" />
+                <input type="submit" class="sendMessage" value="发送" />
+            </form>
+        </div>
+    </section>
+    <div class="faceBox">
+        <div class="faceMask"></div>
+        <div class="faceList">
+            <a class="face0" data-fid="/a"></a>
+            <a class="face1" data-fid="/b"></a>
+            <a class="face2" data-fid="/c"></a>
+            <a class="face3" data-fid="/d"></a>
+            <a class="face4" data-fid="/e"></a>
+            <a class="face5" data-fid="/f"></a>
+            <a class="face6" data-fid="/g"></a>
+            <a class="face7" data-fid="/h"></a>
+            <a class="face8" data-fid="/i"></a>
+            <a class="face9" data-fid="/j"></a>
+            <a class="face10" data-fid="/k"></a>
+            <a class="face11" data-fid="/l"></a>
+            <a class="face12" data-fid="/m"></a>
+            <a class="face13" data-fid="/n"></a>
+            <a class="face14" data-fid="/o"></a>
+            <a class="face15" data-fid="/p"></a>
+        </div>
+    </div>
+    <div class="operateList">
+        <a class="Oat"><i></i></a>
+        <a class="Oskull"><i></i></a>
+        <a class="Onovoice"><i></i></a>
+    </div>
+    <ul class="menuList">
+        <li data-rid="-1">首页</li>
+        <li data-rid="0">女神聊天室</li>
+        <li data-rid="5">情感聊天室</li>
+        <li data-rid="6">直播聊天室</li>
+        <li data-rid="1">天朝聊天室</li>
+        <li data-rid="2">梦想聊天室</li>
+        <li data-rid="3">八卦聊天室</li>
+        <li data-rid="4">书城聊天室</li>
+        <li data-rid="7">树洞聊天室</li>
+    </ul>
+</div>
+
+
+<script src="js/zepto.js"></script>
+<script src="js/zcommon.js"></script>
+<script src="js/chatroom.js"></script>
+<script>
+    (function(D,W) {
+        var chatFn = CT.chat, ls = CT.fn.LS, loadStatusController = chatFn.loadStatusController,
+            ncInitLS = chatFn.commonLS.ncInit, ncRoomLS = chatFn.commonLS.ncRoom, ARQAjax = CT.ajax.ARQAjax;
+
+        //全局初始化
+        chatFn.commonInit();
+
+        //初始化
+        function init(){
+            var chats = $('.chats'),
+                chatList = $('.chatList'),
+                header = $('header'),
+                actionBar = $('.actionBar'),
+                chatroomIcon = $('.chatroomIcon'),
+                bodyHeight = $(window).height(),
+                rarr = chatFn.roomName,
+                ts = new Date().getTime(),
+                identityData = chatFn.identity(ncInitLS),   //在common中判断验证并传过来有效的rid，uid
+                rid = identityData.rid,
+                uid = identityData.uid;
+
+            //uid和rid判断通过
+            chats.height(bodyHeight - header.height() - actionBar.height() + "px");
+            chatroomIcon.html(rarr[rid] + '聊天室');
+
+            //初始化聊天室，传入聊天室号
+            C({
+                rid: rid
+            });
+
+            //调用事件集
+            eventset();
+        }
+
+        //事件集
+        function eventset(){
+            var chats = $('.chats'),
+                chatList = $('.chatList'),
+                chatroomIcon = $('.chatroomIcon'),
+                menuList = $('.menuList'),
+                inputBox = $('.inputBox'),
+                faceIcon = $('.faceIcon'),
+                faceBox = $('.faceBox'),
+                chatPhoto = $('.chatPhoto'),
+                operateList = $('.operateList'),
+                oat = $('.Oat'),
+                oskull = $('.Oskull'),
+                onovoice = $('.Onovoice'),
+                sendMessage = $('.sendMessage'),
+                lsdata = ls.selectLS("*", ncInitLS)[0],
+                rid = lsdata[0].rid,
+                uid = lsdata[0].uid,
+                curUid = "",
+                curName = "",
+                curMsg = "",
+                ts
+
+
+            //表情事件
+            faceIcon.click(function(){
+                if(faceBox.hasClass('faceBoxShow')) {
+                    faceBox.removeClass('faceBoxShow');
+                }else{
+                    faceBox.addClass('faceBoxShow');
+                }
+            });
+            faceBox.bind("click", function (e) {
+                if(e.target.tagName == "A") {
+                    inputBox.val(inputBox.val() + e.target.attributes["data-fid"].value);
+                    faceBox.removeClass('faceBoxShow');
+                }
+            });
+
+            //提交消息----提交数据---inputvalue
+            sendMessage.click(function(e){
+                e.preventDefault();
+                e.stopPropagation();
+                if(inputBox.val() == ""){
+                    inputBox.val('不能提交空消息');
+                }else{
+                    ts = new Date().getTime();
+                    chatFn.scrollToBottom = true;
+                    toolset.ui([{ts: ts, uid: uid,type: "message", detail: inputBox.val()}],1);
+                    toolset.send({
+                        ts: ts,
+                        rid: rid,
+                        uid: uid,
+                        type: "message",
+                        detail: inputBox.val()
+                    });
+                    inputBox.val('');    //清空输入框
+                }
+            });
+
+            //聊天室切换
+            chatroomIcon.click(function(){
+                if(menuList.hasClass('menuListShow')) {
+                    menuList.removeClass('menuListShow');
+                }else{
+                    menuList.addClass('menuListShow');
+                }
+            });
+
+            menuList.bind("click", function (e) {
+                if(e.target.tagName == "LI") {
+                    var mrid = e.target.attributes["data-rid"].value;
+                    if(mrid == "-1"){
+                        location.replace("index.html");
+                    }else if(mrid != rid){
+                        rid = mrid;
+                        ls.updateLS("rid=" + rid, "*", ncInitLS);
+                        menuList.removeClass('menuListShow');
+                        chatroomIcon.html(e.target.innerHTML);
+                        chatInit.tool.stopPolling();
+                        //初始化聊天室，传入聊天室号
+                        setTimeout(function() {
+                            C({
+                                rid: rid,
+                                breakLoading: false
+                            });
+                        },100);
+                    }
+                }
+            },false);
+
+            //聊天室监听事件
+            chatList.bind("click",function(e){
+                var $etarget = $(e.target);
+                if(e.target.tagName == "SPAN" && $etarget.attr('class')){
+                    //头像弹框
+                    if($etarget.attr('class') == 'chatPhoto' && $etarget.attr('data-nid') != uid ) {
+                        curUid = $etarget.attr('data-nid');
+                        curName = $etarget.parent().find('.chatName').html().replace("："," ")
+                        if(operateList.hasClass('operateListShow') && operateList.attr('data-nid') == curUid) {
+                            operateList.removeClass('operateListShow');
+                        }else if(operateList.hasClass('operateListShow') && operateList.attr('data-nid' != curUid)){
+                            operateList.attr('data-nid',curUid);
+                            $etarget.parent().append(operateList);
+                        }else{
+                            operateList.addClass('operateListShow');
+                            operateList.attr('data-nid',curUid);
+                            $etarget.parent().append(operateList);
+                        }
+
+                    }
+                }else{
+                    //赞---提交数据--curMsg
+                    if(e.target.tagName == "SPAN" && $etarget.parent().attr('class') == "addGood"){
+                        curMsg = $etarget.parents('.chatCon').attr('data-mid');
+                        ts = new Date().getTime();
+                        toolset.ui([{ts: ts, uid: uid, type: "good", detail: curMsg}],1);
+                        toolset.send({
+                            ts: ts,
+                            rid: rid,
+                            uid: uid,
+                            type: "good",
+                            detail: curMsg
+                        });
+                    }
+                }
+            },false);
+
+            //头像工具栏事件
+            //@
+            oat.click(function(){
+                inputBox.val(inputBox.val() + "@" + curName);
+                operateList.removeClass('operateListShow');
+            });
+            //黑---提交数据--curUid
+            oskull.click(function(){
+                operateList.removeClass('operateListShow');
+                ts = new Date().getTime();
+                toolset.ui([{ts: ts, uid: uid,type: "bad", detail: curUid}],1);
+                toolset.send({
+                    ts: ts,
+                    rid: rid,
+                    uid: uid,
+                    type: "bad",
+                    detail: curUid
+                });
+            });
+            //禁-->接收消息时通过gag过滤
+            onovoice.click(function(){
+                operateList.removeClass('operateListShow');
+                //如果ls中的gag没有这个禁言对象，则加入
+                if(!lsdata[0].gag.match(curUid)){
+                    var ogag = ls.selectLS("*", ncInitLS)[0][0].gag + "_" + curUid;
+                    ls.updateLS("gag=" + ogag, "*", ncInitLS);
+                }
+            });
+
+        }
+
+        var C = function(ownConfig){
+            chatInit(CT.extend({
+
+            }, ownConfig),function(config, tool){
+                config.chatList.html('');   //清空聊天室内容
+                config.faceBox.removeClass('faceBoxShow');
+                config.menuList.removeClass('menuListShow');
+                config.operateList.removeClass('operateListShow');
+
+                //记录各聊天室初始进入时间,判断是否可以获取更多历史消息
+                if(config.roomTS["r" + config.rid] == "0"){
+                    ls.updateLS("r" + config.rid + "=" + config.oldts, "*", ncRoomLS);
+                }
+                config.enterRoomTS = ls.selectLS("*", ncRoomLS)[0][0]["r" + config.rid];  //传入时间
+                //5秒之后才记录成历史记录
+                if(config.oldts - config.enterRoomTS > 5000){
+                    config.haveHistory = true;
+                    tool.history();
+                }
+
+                //初始化更新数据库的rid,方便member取数据
+                ARQAjax({
+                    url: chatFn.urls.user,
+                    data: {
+                        rid: config.rid,
+                        uid: config.uid,
+                        type: 'update'
+                    },
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) { },
+                    error: function(){ }
+                });
+
+                //获取robot数据
+                ARQAjax({
+                    url: chatFn.urls.robotmsg,
+                    data: {},
+                    dataType: 'json',
+                    cache: false,
+                    success: function (data) {
+                        config.robotMsg = data.robot;
+                        config.robotNum = config.robotMsg.length;
+                        ARQAjax({
+                            url: chatFn.urls.robotTalkmsg,
+                            data: {},
+                            dataType: 'json',
+                            cache: false,
+                            success: function (data) {
+                                config.robotTalkMsg = data.robot;
+                                config.robotTalkNum = config.robotTalkMsg.length;
+                                tool.sendRobot();  //启动robot发送机制
+                            },
+                            error: function(){ }
+                        });
+                    },
+                    error: function(){ }
+                });
+
+                tool.scrollEvent();   //启动滚动判断
+                tool.polling();  //启动轮询
+            });
+        };
+
+        init();
+    })(document,window);
+</script>
+</body>
+</html>
